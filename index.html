@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Peace Study Companion</title>
+    <!-- Google Fonts: Outfit for headings, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body class="light-mode">
+    <div id="app" class="app-layout">
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fa-solid fa-leaf"></i>
+                    <h1>Peace Study</h1>
+                </div>
+                <div class="countdown-widget-small">
+                    <span class="days-left-small" id="countdownDaysSmall">--</span>
+                    <span class="days-text">Days to NEET</span>
+                </div>
+            </div>
+
+            <ul class="nav-links">
+                <li>
+                    <button class="nav-btn active" data-target="view-study">
+                        <i class="fa-solid fa-stopwatch"></i>
+                        <span>Study Room</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-target="view-missions">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>Daily Missions</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-target="view-revision">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Quick Revision</span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <button id="authToggleBtn" class="icon-btn-text" title="Login / Signup">
+                    <i class="fa-solid fa-cloud"></i>
+                    <span id="authToggleText">Offline Mode</span>
+                </button>
+                <button id="themeToggle" class="icon-btn-text" title="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                    <span>Dark Mode</span>
+                </button>
+                <button id="panicBtn" class="btn danger-btn full-width mt-4">
+                    <i class="fa-solid fa-heart-pulse"></i> Overwhelmed?
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- View 1: Study Room -->
+            <section id="view-study" class="view-section active">
+                <div class="view-header">
+                    <h2>Study Room</h2>
+                    <p class="subtitle" id="motivationText">"Consistency beats pressure."</p>
+                </div>
+
+                <div class="focus-centered-container">
+                    <div class="focus-card card main-card">
+                        <div class="timer-settings">
+                            <select id="timerMode" class="styled-select premium">
+                                <option value="25">25m / 5m (Pomodoro)</option>
+                                <option value="50">50m / 10m (Deep Work)</option>
+                                <option value="45">45m / 15m (Standard)</option>
+                            </select>
+                        </div>
+
+                        <div class="timer-display-container premium">
+                            <svg class="progress-ring" width="280" height="280">
+                                <circle class="progress-ring__circle-bg" stroke="currentColor" stroke-width="4"
+                                    fill="transparent" r="130" cx="140" cy="140" />
+                                <circle class="progress-ring__circle" id="timerProgressRing" stroke="currentColor"
+                                    stroke-width="4" stroke-linecap="round" fill="transparent" r="130" cx="140"
+                                    cy="140" />
+                            </svg>
+                            <div class="timer-text premium-text" id="timerDisplay">25:00</div>
+                        </div>
+
+                        <div class="timer-controls">
+                            <button id="startStudyBtn" class="btn primary-btn large-btn premium-btn">Begin Focus
+                                Session</button>
+                            <button id="stopStudyBtn" class="btn secondary-btn large-btn hidden">Stop Early</button>
+                        </div>
+                    </div>
+
+                    <div class="noise-shield card minimal-card">
+                        <div class="noise-header">
+                            <h3><i class="fa-solid fa-headphones"></i> Ambient Noise Shield</h3>
+                            <button class="icon-btn noise-toggle" data-sound="brown" title="Toggle Brown Noise">
+                                <i class="fa-solid fa-power-off"></i>
+                            </button>
+                        </div>
+                        <p class="sub-text">Mask outside distractions with deep calming rumble.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 2: Daily Missions -->
+            <section id="view-missions" class="view-section">
+                <div class="view-header">
+                    <h2>Daily Missions</h2>
+                    <p class="subtitle">Track your progress and stay consistent.</p>
+                </div>
+
+                <div class="missions-layout">
+                    <!-- Progress Overview -->
+                    <div class="progress-card card">
+                        <h3>Subject Mastery</h3>
+                        <div class="progress-tracker">
+                            <div class="progress-item premium-progress">
+                                <div class="progress-label">
+                                    <span>Biology</span><span id="bioProgressText">0%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill bio-fill" id="bioProgress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item premium-progress">
+                                <div class="progress-label">
+                                    <span>Physics</span><span id="phyProgressText">0%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill phy-fill" id="phyProgress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item premium-progress">
+                                <div class="progress-label">
+                                    <span>Chemistry</span><span id="chemProgressText">0%</span>
+                                </div>
+                                <div class="progress-track">
+                                    <div class="progress-fill chem-fill" id="chemProgress" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Task List -->
+                    <div class="task-card card">
+                        <h3>Today's Focus</h3>
+                        <div class="mission-input-area premium-input">
+                            <input type="text" id="newMissionInput" placeholder="What are you studying next?"
+                                class="styled-input">
+                            <select id="missionSubject" class="styled-select">
+                                <option value="Biology">Biology</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Chemistry">Chemistry</option>
+                            </select>
+                            <button id="addMissionBtn" class="btn primary-btn"><i class="fa-solid fa-plus"></i></button>
+                        </div>
+
+                        <ul id="missionList" class="mission-list premium-list">
+                            <!-- Dynamic generated missions -->
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 3: Quick Revision -->
+            <section id="view-revision" class="view-section">
+                <div class="view-header">
+                    <h2>Quick Revision</h2>
+                    <p class="subtitle">Refresh high-yield concepts rapidly.</p>
+                </div>
+
+                <div class="revision-grid">
+                    <button class="revision-btn premium-rev-btn" data-topic="physics">
+                        <div class="icon-circle physics-icon"><i class="fa-solid fa-atom"></i></div>
+                        <h3>Physics Formulas</h3>
+                        <p>Core mechanics & electromagnetism</p>
+                    </button>
+                    <button class="revision-btn premium-rev-btn" data-topic="organic">
+                        <div class="icon-circle organic-icon"><i class="fa-solid fa-flask"></i></div>
+                        <h3>Organic Reactions</h3>
+                        <p>Name reactions & reagents</p>
+                    </button>
+                    <button class="revision-btn premium-rev-btn" data-topic="biology">
+                        <div class="icon-circle bio-icon"><i class="fa-solid fa-dna"></i></div>
+                        <h3>Biology Diagrams</h3>
+                        <p>Cell cycle & human physiology</p>
+                    </button>
+                    <button class="revision-btn premium-rev-btn" data-topic="inorganic">
+                        <div class="icon-circle inorg-icon"><i class="fa-solid fa-gem"></i></div>
+                        <h3>Inorganic Facts</h3>
+                        <p>Trends & coordination compounds</p>
+                    </button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Overlays -->
+
+    <!-- Auth / Login Modal -->
+    <div id="authOverlay" class="overlay hidden">
+        <div class="modal card premium-modal align-center auth-modal">
+            <button class="close-btn icon-btn" id="closeAuthBtn" style="position: absolute; top: 1rem; right: 1rem;"><i
+                    class="fa-solid fa-xmark"></i></button>
+            <div class="auth-icon mb-4"><i class="fa-solid fa-cloud"></i></div>
+            <h3 class="mb-2" id="authTitle">Cloud Sync</h3>
+            <p class="calm-message mb-4">Save your daily missions and statistics across all devices.</p>
+
+            <form id="authForm" class="auth-form w-full">
+                <div id="authErrorMsg" class="auth-error hidden mb-4"></div>
+                <input type="email" id="authEmail" class="styled-input premium-input full-width mb-2"
+                    placeholder="Email Address" required>
+                <input type="password" id="authPassword" class="styled-input premium-input full-width mb-4"
+                    placeholder="Password" required>
+                <button type="submit" id="authSubmitBtn" class="btn primary-btn full-width">Sign In / Sign Up</button>
+            </form>
+
+            <p class="mt-4 calm-message" style="font-size: 0.8rem;">(If you don't have an account, signing in will
+                automatically create one).</p>
+
+            <div id="loggedInView" class="hidden w-full">
+                <p class="mb-4">You are securely signed in.</p>
+                <button id="logoutBtn" class="btn danger-btn full-width">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Distraction Lock Overlay (Full Screen Calm Mode) -->
+    <div id="distractionLockOverlay" class="overlay hidden">
+        <div class="overlay-bg-animated"></div>
+        <div class="distraction-content">
+            <h2 id="distractionSubject">Deep Work</h2>
+            <div class="timer-display massive" id="distractionTimer">25:00</div>
+            <p class="motivational-subtext">You are entirely focused in the present moment.</p>
+            <button id="exitDistractionBtn" class="btn overlay-btn mt-4">Complete Session</button>
+        </div>
+    </div>
+
+    <!-- Panic / Calm Mode Overlay -->
+    <div id="panicOverlay" class="overlay hidden">
+        <div class="panic-content glass-panel premium-glass">
+            <h2 class="calm-title">Find Your Center</h2>
+            <p class="calm-message">Breathe with the circle to reset your nervous system.</p>
+
+            <div class="breathing-circle-container">
+                <div class="breathing-circle-pulse" id="breathingCircle">
+                    <span id="breathingText">Prepare</span>
+                </div>
+            </div>
+
+            <div class="calm-steps-pill">
+                <span>4s Inhale</span> • <span>4s Hold</span> • <span>6s Exhale</span>
+            </div>
+
+            <button id="exitPanicBtn" class="btn primary-btn mt-4">I feel better</button>
+        </div>
+    </div>
+
+    <!-- Quick Revision Modal -->
+    <div id="revisionOverlay" class="overlay hidden">
+        <div class="modal card premium-modal">
+            <div class="modal-header">
+                <h2 id="revisionModalTitle">Quick Revision</h2>
+                <button class="close-btn icon-btn" id="closeRevisionBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="revisionModalBody">
+                <div class="flashcard-ui">
+                    <div class="flashcard">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p id="fcFront" class="fc-text">Loading...</p>
+                                <span class="hint"><i class="fa-solid fa-hand-pointer"></i> Click to flip</span>
+                            </div>
+                            <div class="flashcard-back">
+                                <p id="fcBack" class="fc-text">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flashcard-controls mt-4">
+                        <button id="prevCardBtn" class="btn secondary-btn"><i
+                                class="fa-solid fa-arrow-left"></i></button>
+                        <span id="cardCounter" class="counter-pill">1/5</span>
+                        <button id="nextCardBtn" class="btn secondary-btn"><i
+                                class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Summary Overlay -->
+    <div id="summaryOverlay" class="overlay hidden">
+        <div class="modal card premium-modal align-center">
+            <div class="trophy-icon mb-4"><i class="fa-solid fa-award"></i></div>
+            <h3 class="mb-4">Session Complete</h3>
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="stat-value" id="summaryFocusHours">0</span>
+                    <span class="stat-label">Focus Sessions completed today</span>
+                </div>
+            </div>
+            <p class="mt-4 calm-message">Excellent work. Take a moment to rest before continuing.</p>
+            <button id="finishDayBtn" class="btn primary-btn mt-4">Close Info</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
