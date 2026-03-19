@@ -4,21 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEET Peace Study Companion</title>
+    <title>NEET Peace | Ultimate Toolkit</title>
     <!-- Google Fonts: Outfit for headings, Inter for body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;600;700&display=swap"
         rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1.2">
     <!-- Supabase JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body class="light-mode">
+    <nav class="mobile-bottom-nav">
+        <button class="nav-btn active" data-target="view-study">
+            <i class="fa-solid fa-stopwatch"></i>
+        </button>
+        <button class="nav-btn" data-target="view-missions">
+            <i class="fa-solid fa-list-check"></i>
+        </button>
+        <button class="nav-btn" data-target="view-flashcards">
+            <i class="fa-solid fa-bolt"></i>
+        </button>
+        <button class="nav-btn" data-target="view-revision">
+            <i class="fa-solid fa-search"></i>
+        </button>
+        <button class="nav-btn" data-target="view-analytics">
+            <i class="fa-solid fa-calendar-days"></i>
+        </button>
+        <button class="nav-btn" data-target="view-mistakes">
+            <i class="fa-solid fa-book-medical"></i>
+        </button>
+        <button class="nav-btn" data-target="view-profile">
+            <i class="fa-solid fa-user"></i>
+        </button>
+    </nav>
     <div id="app" class="app-layout">
 
         <!-- Sidebar Navigation -->
@@ -31,6 +54,10 @@
                 <div class="countdown-widget-small">
                     <span class="days-left-small" id="countdownDaysSmall">--</span>
                     <span class="days-text">Days to NEET</span>
+                </div>
+                <div id="syncIndicator" class="sync-indicator hidden">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span>Syncing...</span>
                 </div>
             </div>
 
@@ -48,22 +75,38 @@
                     </button>
                 </li>
                 <li>
-                    <button class="nav-btn" data-target="view-revision">
+                    <button class="nav-btn" data-target="view-flashcards">
                         <i class="fa-solid fa-bolt"></i>
-                        <span>Quick Revision</span>
+                        <span>Flashcards</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-target="view-revision">
+                        <i class="fa-solid fa-search"></i>
+                        <span>NCERT Search</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-target="view-analytics">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Analytics</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-target="view-mistakes">
+                        <i class="fa-solid fa-book-medical"></i>
+                        <span>Mistake Log</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="nav-btn" data-target="view-profile">
+                        <i class="fa-solid fa-user"></i>
+                        <span id="navProfileText">Profile / Auth</span>
                     </button>
                 </li>
             </ul>
 
             <div class="sidebar-footer">
-                <button id="authToggleBtn" class="icon-btn-text" title="Login / Signup">
-                    <i class="fa-solid fa-cloud"></i>
-                    <span id="authToggleText">Offline Mode</span>
-                </button>
-                <button id="themeToggle" class="icon-btn-text" title="Toggle Dark Mode">
-                    <i class="fa-solid fa-moon"></i>
-                    <span>Dark Mode</span>
-                </button>
                 <button id="panicBtn" class="btn danger-btn full-width mt-4">
                     <i class="fa-solid fa-heart-pulse"></i> Overwhelmed?
                 </button>
@@ -72,6 +115,9 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
+            <button id="headerThemeToggle" class="theme-pill-toggle" title="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
 
             <!-- View 1: Study Room -->
             <section id="view-study" class="view-section active">
@@ -87,7 +133,10 @@
                                 <option value="25">25m / 5m (Pomodoro)</option>
                                 <option value="50">50m / 10m (Deep Work)</option>
                                 <option value="45">45m / 15m (Standard)</option>
+                                <option value="custom">Custom Minutes...</option>
                             </select>
+                            <input type="number" id="customTimerInput" class="styled-input hidden" placeholder="Mins"
+                                min="1" max="300" style="width: 80px; margin-left: 0.5rem;">
                         </div>
 
                         <div class="timer-display-container premium">
@@ -102,9 +151,16 @@
                         </div>
 
                         <div class="timer-controls">
-                            <button id="startStudyBtn" class="btn primary-btn large-btn premium-btn">Begin Focus
-                                Session</button>
-                            <button id="stopStudyBtn" class="btn secondary-btn large-btn hidden">Stop Early</button>
+                            <div class="timer-actions-row">
+                                <button id="startStudyBtn" class="btn primary-btn pulse-glow">Begin Focus Session</button>
+                                <button id="pauseStudyBtn" class="btn secondary-btn hidden">
+                                    <i class="fa-solid fa-pause"></i> Pause
+                                </button>
+                                <button id="resumeStudyBtn" class="btn primary-btn hidden">
+                                    <i class="fa-solid fa-play"></i> Resume
+                                </button>
+                                <button id="stopStudyBtn" class="btn secondary-btn hidden">Stop Early</button>
+                            </div>
                         </div>
                     </div>
 
@@ -180,34 +236,196 @@
                 </div>
             </section>
 
-            <!-- View 3: Quick Revision -->
-            <section id="view-revision" class="view-section">
+            <!-- View 3: Flashcards (Quick Refresh) -->
+            <section id="view-flashcards" class="view-section">
                 <div class="view-header">
-                    <h2>Quick Revision</h2>
-                    <p class="subtitle">Refresh high-yield concepts rapidly.</p>
+                    <h2>Flashcards</h2>
+                    <p class="subtitle">Quick categorical refresh of high-yield concepts.</p>
                 </div>
 
-                <div class="revision-grid">
-                    <button class="revision-btn premium-rev-btn" data-topic="physics">
-                        <div class="icon-circle physics-icon"><i class="fa-solid fa-atom"></i></div>
-                        <h3>Physics Formulas</h3>
-                        <p>Core mechanics & electromagnetism</p>
+                <div class="quick-refresh-row mb-4">
+                    <button class="mini-rev-btn" data-topic="physics">
+                        <i class="fa-solid fa-atom"></i>
+                        <span>Physics</span>
                     </button>
-                    <button class="revision-btn premium-rev-btn" data-topic="organic">
-                        <div class="icon-circle organic-icon"><i class="fa-solid fa-flask"></i></div>
-                        <h3>Organic Reactions</h3>
-                        <p>Name reactions & reagents</p>
+                    <button class="mini-rev-btn" data-topic="organic">
+                        <i class="fa-solid fa-flask"></i>
+                        <span>Organic</span>
                     </button>
-                    <button class="revision-btn premium-rev-btn" data-topic="biology">
-                        <div class="icon-circle bio-icon"><i class="fa-solid fa-dna"></i></div>
-                        <h3>Biology Diagrams</h3>
-                        <p>Cell cycle & human physiology</p>
+                    <button class="mini-rev-btn" data-topic="biology">
+                        <i class="fa-solid fa-dna"></i>
+                        <span>Biology</span>
                     </button>
-                    <button class="revision-btn premium-rev-btn" data-topic="inorganic">
-                        <div class="icon-circle inorg-icon"><i class="fa-solid fa-gem"></i></div>
-                        <h3>Inorganic Facts</h3>
-                        <p>Trends & coordination compounds</p>
+                    <button class="mini-rev-btn" data-topic="inorganic">
+                        <i class="fa-solid fa-gem"></i>
+                        <span>Inorganic</span>
                     </button>
+                </div>
+            </section>
+
+            <!-- View 4: NCERT Search -->
+            <section id="view-revision" class="view-section">
+                <div class="view-header">
+                    <h2>NCERT Search</h2>
+                    <p class="subtitle">Deep contextual search over full syllabus.</p>
+                </div>
+
+                <div class="revision-search-container mb-4 w-full">
+                    <div class="search-input-wrapper premium-input" style="position: relative;">
+                        <i class="fa-solid fa-magnifying-glass"
+                            style="position: absolute; left: 1.2rem; top: 1.2rem; color: var(--text-tertiary);"></i>
+                        <input type="text" id="revisionSearchInput" class="styled-input full-width"
+                            placeholder="Search Biology Concepts, Formulas, or Topics..."
+                            style="padding-left: 3rem; font-size: 1.1rem; height: 3.5rem;">
+                        <button id="revisionSearchBtn" class="btn primary-btn"
+                            style="position: absolute; right: 0.5rem; top: 0.5rem; bottom: 0.5rem;">Search</button>
+                    </div>
+                </div>
+
+                <div id="revisionResultsGrid" class="revision-results-layout">
+                    <!-- Dynamic Search Results will appear here -->
+                </div>
+            </section>
+
+            <!-- View 5: Analytics & History -->
+            <section id="view-analytics" class="view-section">
+                <div class="view-header">
+                    <h2>Analytics & History</h2>
+                    <p class="subtitle">Your consistency is your superpower.</p>
+                </div>
+
+                <div class="analytics-layout">
+                    <!-- New Premium Dashboard Top -->
+                    <div class="stats-summary-grid mb-6">
+                        <div class="card summary-card">
+                            <div class="summary-icon streak-icon"><i class="fa-solid fa-fire"></i></div>
+                            <div class="summary-info">
+                                <span class="summary-label">Streak</span>
+                                <span id="currentStreak" class="summary-value">0 Days</span>
+                            </div>
+                        </div>
+                        <div class="card summary-card">
+                            <div class="summary-icon hours-icon"><i class="fa-solid fa-clock"></i></div>
+                            <div class="summary-info">
+                                <span class="summary-label">Focus</span>
+                                <span id="totalFocusHours" class="summary-value">0h</span>
+                            </div>
+                        </div>
+                        <div class="card summary-card">
+                            <div class="summary-icon score-icon"><i class="fa-solid fa-brain"></i></div>
+                            <div class="summary-info">
+                                <span class="summary-label">Mastery</span>
+                                <span id="masteryScore" class="summary-value">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Goal Progress Section -->
+                    <div class="analytics-card mt-6">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-bullseye color-bio"></i> Daily Goal Progress</h3>
+                            <div class="goal-setter">
+                                <span>Target:</span>
+                                <select id="dailyGoalSelect" class="mini-select">
+                                    <option value="120">2h</option>
+                                    <option value="240" selected>4h</option>
+                                    <option value="360">6h</option>
+                                    <option value="480">8h</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="goalChart" class="goal-chart-container">
+                            <!-- Progress bar will be rendered here -->
+                        </div>
+                    </div>
+
+
+                    <div id="dayDetailCard" class="day-detail-card hidden">
+                        <div class="detail-header">
+                            <h4 id="detailDate">Date</h4>
+                            <button id="closeDayDetailBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="detail-body">
+                            <p>Focus: <span id="detailHours">0h</span></p>
+                            <p>Tasks: <span id="detailTasks">0</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Achievements & Badges Grid -->
+                    <div class="analytics-card mt-6">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-trophy color-phy"></i> Your Achievements</h3>
+                        </div>
+                        <div id="badgesGrid" class="badges-grid">
+                            <!-- Badges will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 6: Mistake Log -->
+            <section id="view-mistakes" class="view-section">
+                <div class="view-header">
+                    <h2>Mistake Notebook</h2>
+                    <p class="subtitle">Don't repeat errors. Turn them into strength.</p>
+                </div>
+
+                <div class="mistake-input-area card mb-4">
+                    <div class="premium-input mb-2">
+                        <input type="text" id="mistakeTopic" placeholder="Concept/Topic of the mistake..."
+                            class="styled-input full-width">
+                    </div>
+                    <div class="flex-row gap-2 mb-2">
+                        <select id="mistakeReason" class="styled-select flex-1">
+                            <option value="Silly Mistake">Silly Mistake</option>
+                            <option value="Conceptual Gap">Conceptual Gap</option>
+                            <option value="Calculation Error">Calculation Error</option>
+                            <option value="Memory Fade">Memory Fade</option>
+                        </select>
+                        <select id="mistakeSubject" class="styled-select flex-1">
+                            <option value="Biology">Biology</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                        </select>
+                    </div>
+                    <button id="addMistakeBtn" class="btn primary-btn full-width">Log Mistake</button>
+                </div>
+
+                <div id="mistakeList" class="mistake-list-container">
+                    <!-- Mistakes rendered here -->
+                </div>
+            </section>
+
+            <!-- View 7: Profile / Auth -->
+            <section id="view-profile" class="view-section">
+                <div class="view-header">
+                    <h2>Profile & Cloud Sync</h2>
+                    <p class="subtitle">Securely save your progress and missions.</p>
+                </div>
+
+                <div class="focus-centered-container" style="max-width: 400px; margin-top: 2rem;">
+                    <div class="card premium-modal align-center auth-modal" style="width: 100%;">
+                        <div class="auth-icon mb-4"><i class="fa-solid fa-cloud"></i></div>
+
+                        <form id="authForm" class="auth-form w-full">
+                            <h3 class="mb-4" id="authTitle">Sign In / Sign Up</h3>
+                            <div id="authErrorMsg" class="auth-error hidden mb-4"></div>
+                            <input type="email" id="authEmail" class="styled-input premium-input full-width mb-2"
+                                placeholder="Email Address" required>
+                            <input type="password" id="authPassword" class="styled-input premium-input full-width mb-4"
+                                placeholder="Password" required>
+                            <button type="submit" id="authSubmitBtn" class="btn primary-btn full-width">Sign In</button>
+                            <p class="mt-4 calm-message" style="font-size: 0.8rem;">(If you don't have an account,
+                                signing in will automatically create one).</p>
+                        </form>
+
+                        <div id="loggedInView" class="hidden w-full">
+                            <h3 class="mb-4">Welcome Back!</h3>
+                            <p class="mb-4 text-center">You are securely signed in and syncing to the cloud.</p>
+                            <p id="userEmailDisplay" class="mb-4 font-bold color-primary"></p>
+                            <button id="logoutBtn" class="btn danger-btn full-width">Sign Out</button>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -216,42 +434,79 @@
 
     <!-- Overlays -->
 
-    <!-- Auth / Login Modal -->
-    <div id="authOverlay" class="overlay hidden">
-        <div class="modal card premium-modal align-center auth-modal">
-            <button class="close-btn icon-btn" id="closeAuthBtn" style="position: absolute; top: 1rem; right: 1rem;"><i
-                    class="fa-solid fa-xmark"></i></button>
-            <div class="auth-icon mb-4"><i class="fa-solid fa-cloud"></i></div>
-            <h3 class="mb-2" id="authTitle">Cloud Sync</h3>
-            <p class="calm-message mb-4">Save your daily missions and statistics across all devices.</p>
-
-            <form id="authForm" class="auth-form w-full">
-                <div id="authErrorMsg" class="auth-error hidden mb-4"></div>
-                <input type="email" id="authEmail" class="styled-input premium-input full-width mb-2"
-                    placeholder="Email Address" required>
-                <input type="password" id="authPassword" class="styled-input premium-input full-width mb-4"
-                    placeholder="Password" required>
-                <button type="submit" id="authSubmitBtn" class="btn primary-btn full-width">Sign In / Sign Up</button>
-            </form>
-
-            <p class="mt-4 calm-message" style="font-size: 0.8rem;">(If you don't have an account, signing in will
-                automatically create one).</p>
-
-            <div id="loggedInView" class="hidden w-full">
-                <p class="mb-4">You are securely signed in.</p>
-                <button id="logoutBtn" class="btn danger-btn full-width">Sign Out</button>
+    <!-- Flashcard Overlay -->
+    <div id="revisionOverlay" class="overlay hidden">
+        <div class="overlay-content premium-modal animate-slide-up">
+            <div class="modal-header">
+                <h3 id="revisionModalTitle">Biology Flashcards</h3>
+                <button id="closeRevisionBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="flashcard-container">
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <p id="fcFront">Question Loading...</p>
+                        </div>
+                        <div class="flashcard-back">
+                            <p id="fcBack">Answer Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flashcard-nav">
+                <button id="prevCardBtn" class="icon-btn highlight"><i class="fa-solid fa-chevron-left"></i></button>
+                <span id="cardCounter">1/10</span>
+                <button id="nextCardBtn" class="icon-btn highlight"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
         </div>
     </div>
 
-    <!-- Distraction Lock Overlay (Full Screen Calm Mode) -->
-    <div id="distractionLockOverlay" class="overlay hidden">
-        <div class="overlay-bg-animated"></div>
-        <div class="distraction-content">
-            <h2 id="distractionSubject">Deep Work</h2>
-            <div class="timer-display massive" id="distractionTimer">25:00</div>
-            <p class="motivational-subtext">You are entirely focused in the present moment.</p>
-            <button id="exitDistractionBtn" class="btn overlay-btn mt-4">Complete Session</button>
+    <!-- NCERT Full View Overlay -->
+    <div id="ncertFullViewOverlay" class="overlay hidden">
+        <div class="ncert-full-view-modal animate-slide-up">
+            <button id="closeNcertFullViewBtn" class="ncert-full-close"><i class="fa-solid fa-xmark"></i></button>
+            <div id="ncertFullViewContent" class="ncert-full-content-scroll">
+                <!-- Full NCERT text injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Focus Space (Formerly Distraction Lock) -->
+    <div id="distractionLockOverlay" class="overlay hidden focus-space-overlay">
+        <div class="focus-space-bg"></div>
+        <div class="focus-space-content">
+            <div class="focus-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span id="distractionSubject">Deep Work</span>
+            </div>
+            
+            <div class="timer-display-massive" id="distractionTimer">25:00</div>
+            
+            <div class="quote-container">
+                <i class="fa-solid fa-quote-left quote-icon"></i>
+                <p id="focusQuote" class="focus-quote-text">"Just one page at a time."</p>
+                <i class="fa-solid fa-quote-right quote-icon"></i>
+            </div>
+
+            <div class="focus-status">
+                <div class="status-pulse"></div>
+                <p>Focusing on your goal...</p>
+            </div>
+
+            <div class="focus-actions mt-8">
+                <button id="minimizeDistractionBtn" class="btn premium-btn-outline" title="Minimize to floating pill">
+                    <i class="fa-solid fa-compress"></i> Minimize
+                </button>
+                <button id="pauseDistractionBtn" class="btn premium-btn-outline">
+                    <i class="fa-solid fa-pause"></i> Pause
+                </button>
+                <button id="resumeDistractionBtn" class="btn premium-btn-outline hidden">
+                    <i class="fa-solid fa-play"></i> Resume
+                </button>
+                <button id="exitDistractionBtn" class="btn premium-btn-outline">
+                    <i class="fa-solid fa-check-circle"></i> Complete Session
+                </button>
+            </div>
         </div>
     </div>
 
@@ -275,37 +530,7 @@
         </div>
     </div>
 
-    <!-- Quick Revision Modal -->
-    <div id="revisionOverlay" class="overlay hidden">
-        <div class="modal card premium-modal">
-            <div class="modal-header">
-                <h2 id="revisionModalTitle">Quick Revision</h2>
-                <button class="close-btn icon-btn" id="closeRevisionBtn"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="modal-body" id="revisionModalBody">
-                <div class="flashcard-ui">
-                    <div class="flashcard">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front">
-                                <p id="fcFront" class="fc-text">Loading...</p>
-                                <span class="hint"><i class="fa-solid fa-hand-pointer"></i> Click to flip</span>
-                            </div>
-                            <div class="flashcard-back">
-                                <p id="fcBack" class="fc-text">Loading...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flashcard-controls mt-4">
-                        <button id="prevCardBtn" class="btn secondary-btn"><i
-                                class="fa-solid fa-arrow-left"></i></button>
-                        <span id="cardCounter" class="counter-pill">1/5</span>
-                        <button id="nextCardBtn" class="btn secondary-btn"><i
-                                class="fa-solid fa-arrow-right"></i></button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Daily Summary Overlay -->
     <div id="summaryOverlay" class="overlay hidden">
@@ -323,7 +548,16 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=1.2"></script>
+
+    <!-- Global Floating Elements -->
+    <div id="miniTimerPill" class="mini-timer-pill hidden">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span id="miniTimerDisplay">25:00</span>
+        <button id="maximizeFocusBtn" class="pill-action-btn" title="Maximize to Focus Space">
+            <i class="fa-solid fa-expand"></i>
+        </button>
+    </div>
 </body>
 
 </html>
