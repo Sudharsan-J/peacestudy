@@ -319,7 +319,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (el.dailyGoalSelect) el.dailyGoalSelect.onchange = (e) => {
                 state.dailyGoal = parseInt(e.target.value);
-                localStorage.setItem('neet_daily_goal', state.dailyGoal);
+                if (state.user) {
+                    localStorage.setItem('neet_daily_goal', state.dailyGoal);
+                    saveData();
+                }
                 renderGoalChart();
             };
 
@@ -386,6 +389,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateProgressBars();
                         renderMistakes();
                         generateCalendar();
+                    } else {
+                        // Safety: If no session, clear any residual "zombie" local data
+                        const keysToRemove = [
+                            'neet_missions', 'neet_stats', 'neet_mistakes', 
+                            'neet_history', 'neet_badges', 'neet_daily_goal'
+                        ];
+                        keysToRemove.forEach(k => localStorage.removeItem(k));
+                        updateAuthUI();
                     }
                 } catch (sbErr) {
                     console.warn("Supabase session fetch failed, continuing in offline mode:", sbErr);
@@ -439,11 +450,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function saveData() {
+        if (!state.user) return; // PROMPT: Only save if logged in
+
         // Always save to localStorage as a backup / offline mode
         localStorage.setItem('neet_missions', JSON.stringify(state.missions));
         localStorage.setItem('neet_stats', JSON.stringify(state.stats));
         localStorage.setItem('neet_mistakes', JSON.stringify(state.mistakes));
         localStorage.setItem('neet_history', JSON.stringify(state.history));
+        localStorage.setItem('neet_daily_goal', state.dailyGoal);
+        localStorage.setItem('neet_badges', JSON.stringify(state.badges));
 
         // If logged in, sync to Supabase
         if (state.user) {
@@ -579,8 +594,28 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleLogout() {
         await supabase.auth.signOut();
         state.user = null;
+
+        // Clear sensitive local data on logout
+        const keysToRemove = [
+            'neet_missions', 'neet_stats', 'neet_mistakes', 
+            'neet_history', 'neet_badges', 'neet_daily_goal'
+        ];
+        keysToRemove.forEach(k => localStorage.removeItem(k));
+
+        // Reset local state for the UI
+        state.missions = [];
+        state.mistakes = [];
+        state.stats = { focusSessions: 0, tasksCompleted: 0, lastDate: new Date().toDateString() };
+        state.history = {};
+        state.badges = [];
+        state.dailyGoal = 240;
+
         updateAuthUI();
-        // Option to clear local state here, or let them keep working on local copy
+        renderMissions();
+        renderMistakes();
+        renderGoalChart();
+        updateProgressBars();
+        updateDashboardStats();
     }
 
     // --- UI Basics ---
@@ -1362,7 +1397,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        if (addedCount > 0) {
+        if (addedCount > 0 && state.user) {
             localStorage.setItem('neet_badges', JSON.stringify(state.badges));
             renderBadgesGrid();
             saveData();
