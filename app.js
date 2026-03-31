@@ -143,6 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
         mistakes: JSON.parse(localStorage.getItem('neet_mistakes')) || [],
         history: JSON.parse(localStorage.getItem('neet_history')) || {}, // Keyed by date string
 
+        // Extended Stats
+        lifetimeSessions: parseInt(localStorage.getItem('neet_lifetime_sessions')) || 0,
+
         audioCtx: null,
         noiseNode: null,
         filterNode: null,
@@ -259,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
         summaryOverlay: document.getElementById('summaryOverlay'),
         finishDayBtn: document.getElementById('finishDayBtn'),
         summaryFocusHours: document.getElementById('summaryFocusHours'),
+        summaryLifetimeSessions: document.getElementById('summaryLifetimeSessions'),
 
         // Sync Indicator
         syncIndicator: document.getElementById('syncIndicator'),
@@ -459,6 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('neet_history', JSON.stringify(state.history));
         localStorage.setItem('neet_daily_goal', state.dailyGoal);
         localStorage.setItem('neet_badges', JSON.stringify(state.badges));
+        localStorage.setItem('neet_lifetime_sessions', state.lifetimeSessions);
 
         // If logged in, sync to Supabase
         if (state.user) {
@@ -471,7 +476,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     tasks_completed: state.stats.tasksCompleted,
                     last_active_date: state.stats.lastDate,
                     mistakes: state.mistakes,
-                    history: state.history
+                    history: state.history,
+                    lifetime_sessions: state.lifetimeSessions
                 });
 
                 // Clear remote missions and insert current active ones
@@ -509,6 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 state.mistakes = profile.mistakes || [];
                 state.history = profile.history || {};
+                state.lifetimeSessions = profile.lifetime_sessions || state.lifetimeSessions;
             }
 
             // Load missions
@@ -598,7 +605,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear sensitive local data on logout
         const keysToRemove = [
             'neet_missions', 'neet_stats', 'neet_mistakes', 
-            'neet_history', 'neet_badges', 'neet_daily_goal'
+            'neet_history', 'neet_badges', 'neet_daily_goal',
+            'neet_lifetime_sessions'
         ];
         keysToRemove.forEach(k => localStorage.removeItem(k));
 
@@ -609,6 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
         state.history = {};
         state.badges = [];
         state.dailyGoal = 240;
+        state.lifetimeSessions = 0;
 
         updateAuthUI();
         renderMissions();
@@ -795,6 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stopFocusSession();
         playChime();
         state.stats.focusSessions++;
+        state.lifetimeSessions++;
 
         // Update history
         updateHistory(sessionMins, 0);
@@ -1264,7 +1274,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Summary Logic ---
     function showSummaryModal() {
-        el.summaryFocusHours.textContent = state.stats.focusSessions;
+        if (el.summaryFocusHours) el.summaryFocusHours.textContent = state.stats.focusSessions;
+        if (el.summaryLifetimeSessions) el.summaryLifetimeSessions.textContent = state.lifetimeSessions;
         el.summaryOverlay.classList.remove('hidden');
     }
 

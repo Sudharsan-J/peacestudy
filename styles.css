@@ -2829,9 +2829,25 @@ body.dark-mode .mobile-bottom-nav {
 }
 
 /* God Mode - Cursor & Selection Fixes */
-.timer-text, .premium-text, .summary-value, .day-hours {
-    user-select: none !important;
-    -webkit-user-select: none !important;
+/* God Mode - Final UI Refinements & Caret Fixes */
+html, body {
     caret-color: transparent !important;
+}
+
+input, textarea, [contenteditable="true"] {
+    caret-color: auto !important;
+}
+
+.summary-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.summary-stats .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
