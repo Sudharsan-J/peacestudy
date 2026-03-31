@@ -2934,15 +2934,19 @@ input, textarea, [contenteditable="true"] {
     }
 }
 
-/* Professional Production-Level Mobile Layout (HACK-FREE) */
+/* =========================================
+   PROFESSIONAL MOBILE ARCHITECTURE (v1.16)
+   ========================================= */
+
 :root {
     --mobile-nav-height: 72px;
 }
 
+/* Master Viewport Lock */
 html, body {
-    overflow: hidden !important;
     width: 100vw !important;
     height: 100vh !important;
+    overflow: hidden !important; /* Prevents double scrolling */
     position: relative;
     box-sizing: border-box;
 }
@@ -2951,22 +2955,36 @@ html, body {
     box-sizing: border-box !important;
 }
 
-.main-content {
-    max-width: 100vw !important;
-    height: 100% !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    position: relative;
-    /* Default spacing for desktop */
-    padding-bottom: 2rem;
+/* Core Layout Controller */
+.app-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
+/* Desktop Sidebar remains unchanged */
+
 @media (max-width: 480px) {
+    /* Architectural Shift: The "Docked" Model */
+    .app-layout {
+        flex-direction: column !important;
+    }
+
+    .sidebar {
+        display: none !important; /* Sidebar hidden on mobile */
+    }
+
+    /* .main-content is the only scrolling sibling */
     .main-content {
-        padding: 1.25rem 0.8rem !important;
-        /* THE PROFESSIONAL FIX: Calculated padding based on Nav Height + Safe Area + Extra Breathing Room */
-        padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom) + 2.5rem) !important;
+        flex: 1 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+        width: 100vw !important;
+        padding: 1rem 0.75rem !important;
+        padding-bottom: 2rem !important; /* Bottom-most card breathing room */
+        -webkit-overflow-scrolling: touch;
     }
 
     .card {
@@ -2975,29 +2993,25 @@ html, body {
         margin-bottom: 1.5rem !important;
     }
 
-    /* Fixed Bottom Bar - Production Standard with Notch Support */
+    /* Fixed Bottom Dock - The Professional sibling */
     .mobile-bottom-nav {
-        position: fixed !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
+        position: relative !important; /* FLEX SIBLING - OCCUPIES REAL SPACE */
+        flex-shrink: 0 !important;
         width: 100% !important;
-        /* Height accounts for standard height + safe area (notch/home bar) */
-        height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom)) !important;
+        /* Balanced height + safe area support */
+        min-height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom)) !important;
         padding-bottom: env(safe-area-inset-bottom) !important;
         background: var(--bg-secondary) !important;
-        border-radius: 0 !important;
-        border: none !important;
         border-top: 1px solid var(--border-color) !important;
-        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.08) !important;
         display: flex !important;
         justify-content: space-around !important;
         align-items: center !important;
-        z-index: 1000 !important;
+        z-index: 100 !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.05) !important;
     }
 
     body.dark-mode .mobile-bottom-nav {
-        background: #0A0A0A !important;
+        background: #0D0D0D !important;
         border-top: 1px solid #1A1A1A !important;
     }
 
@@ -3007,48 +3021,40 @@ html, body {
         border: none !important;
         background: none !important;
         flex-direction: column !important;
-        gap: 4px !important;
-        font-size: 0.72rem !important;
+        gap: 6px !important;
+        font-size: 0.75rem !important;
+        color: var(--text-secondary);
         padding: 0 !important;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-bottom-nav .nav-btn.active {
+        color: var(--text-primary);
     }
     
     .mobile-bottom-nav .nav-btn i {
-        font-size: 1.3rem !important;
+        font-size: 1.4rem !important;
     }
 
-    /* Input Stacking for missions and search */
+    /* Grid Stacking for vertical mobile stability */
     .search-input-wrapper,
     .premium-input {
         display: flex !important;
         flex-direction: column !important;
         gap: 0.85rem !important;
-        position: static !important;
         width: 100% !important;
     }
 
-    #revisionSearchInput,
-    .premium-input input,
-    .premium-input select {
-        height: 3.5rem !important;
-        font-size: 1rem !important;
-        width: 100% !important;
-        padding-left: 1rem !important;
-    }
-
-    #revisionSearchBtn,
+    .premium-input input, 
+    .premium-input select,
     .premium-input button {
         height: 3.5rem !important;
         width: 100% !important;
-        position: static !important;
-    }
-
-    .search-input-wrapper i {
-        display: none !important;
+        margin: 0 !important;
     }
 
     .missions-layout {
         grid-template-columns: 1fr !important;
         gap: 1.5rem !important;
-        width: 100% !important;
     }
 }
