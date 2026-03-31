@@ -2936,30 +2936,37 @@ input, textarea, [contenteditable="true"] {
 
 /* Final Production Mobile Polish - ZERO OVERFLOW & NAV PROTECTION */
 html, body {
-    overflow-x: hidden !important;
+    overflow: hidden !important; /* Body doesn't scroll, main-content does */
     width: 100vw !important;
+    height: 100vh !important;
     position: relative;
     box-sizing: border-box;
 }
 
 *, *:before, *:after {
-    box-sizing: inherit;
+    box-sizing: border-box !important;
 }
 
 .main-content {
     max-width: 100vw !important;
+    height: 100% !important;
+    overflow-y: auto !important;
     overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+    padding-bottom: 80px; /* Base padding */
 }
 
 @media (max-width: 480px) {
     .main-content {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
-        padding-bottom: 180px !important; /* Massive padding to clear the floating pill and nav */
+        padding-bottom: 220px !important; /* Massive padding to ensure scroll clears ALL floating elements */
     }
 
     .card {
         width: 100% !important;
+        max-width: 100% !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
@@ -2974,7 +2981,7 @@ html, body {
 
     #revisionSearchInput {
         padding-left: 1rem !important;
-        height: 3rem !important;
+        height: 3.2rem !important;
         font-size: 1rem !important;
         width: 100% !important;
     }
@@ -2982,17 +2989,18 @@ html, body {
     #revisionSearchBtn {
         position: static !important;
         width: 100% !important;
-        height: 3rem !important;
+        height: 3.2rem !important;
     }
 
     .search-input-wrapper i {
-        display: none !important; /* Hide icon to save space */
+        display: none !important;
     }
 
-    /* Chart horizontal scroll safety */
-    .weekly-chart {
-        overflow-x: hidden;
-        padding: 1.5rem 0.2rem !important;
+    /* Missions Fix */
+    .missions-layout {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+        width: 100% !important;
     }
 }
 
