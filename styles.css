@@ -3077,51 +3077,61 @@ html, body {
         color: white !important;
     }
 
-    /* Target specific NCERT search refinements */
-    .search-input-wrapper {
+    /* Smart Search Bar (Single Line Premium) */
+    .smart-search-bar {
         display: flex !important;
-        flex-direction: column !important;
-        gap: 0.8rem !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        background: #FFFFFF !important;
+        border: 2px solid #EEEEEE !important;
+        border-radius: 32px !important;
+        height: 62px !important;
         width: 100% !important;
+        padding: 5px !important; /* Internal spacing for the button */
         position: relative !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05) !important;
+    }
+
+    .smart-search-bar .search-icon-inner {
+        position: absolute !important;
+        left: 1.25rem !important;
+        color: #888888 !important;
+        font-size: 1.2rem !important;
+        pointer-events: none !important;
     }
 
     #revisionSearchInput {
-        height: 56px !important;
-        width: 100% !important;
-        background: #FFFFFF !important;
-        border: 2px solid #EEEEEE !important;
-        border-radius: 28px !important;
-        padding: 0 1.5rem 0 3.2rem !important;
+        flex: 1 !important;
+        height: 100% !important;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 1rem 0 3.5rem !important;
         font-size: 1rem !important;
         color: #111111 !important;
-        position: static !important;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
-    }
-
-    .search-input-wrapper .search-icon {
-        display: flex !important;
-        position: absolute !important;
-        left: 1.25rem !important;
-        top: 28px !important;
-        transform: translateY(-50%) !important;
-        color: #888888 !important;
-        font-size: 1.1rem !important;
-        z-index: 200 !important;
-    }
-
-    #revisionSearchBtn {
-        height: 54px !important;
+        box-shadow: none !important;
         width: 100% !important;
-        border-radius: 27px !important;
+    }
+
+    .smart-search-btn {
+        height: 52px !important; /* Slightly smaller than bar */
+        padding: 0 1.5rem !important;
         background: #000000 !important;
-        color: #FFFFFF !important;
+        color: white !important;
+        border-radius: 26px !important;
+        border: none !important;
         font-weight: 700 !important;
-        letter-spacing: 0.5px !important;
-        position: static !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        font-size: 0.95rem !important;
+        cursor: pointer !important;
+        transition: transform 0.2s ease !important;
+    }
+
+    .smart-search-btn:active {
+        transform: scale(0.96) !important;
+    }
+
+    /* Remove old wrappers to avoid conflict */
+    .search-input-wrapper {
+        display: none !important;
     }
 
     .missions-layout {
