@@ -3044,42 +3044,71 @@ html, body {
         padding: 1.25rem !important;
     }
 
-    /* Input Stacking: Absolute Zero Overflow */
-    .search-input-wrapper,
-    .premium-input {
+    /* Premium Pill Search Bar Refactor */
+    .search-input-wrapper {
         display: flex !important;
         flex-direction: column !important;
-        gap: 0.85rem !important;
+        gap: 0.8rem !important;
         width: 100% !important;
+        position: relative !important;
         padding: 0 !important;
     }
 
-    #revisionSearchInput,
-    .premium-input input, 
-    .premium-input select,
-    #revisionSearchBtn,
-    .premium-input button {
-        height: 3.5rem !important;
+    #revisionSearchInput {
+        height: 56px !important;
         width: 100% !important;
-        margin: 0 !important;
+        background: #FFFFFF !important;
+        border: 2px solid #EEEEEE !important;
+        border-radius: 28px !important;
+        padding: 0 1.5rem 0 3.2rem !important; /* Space for the icon */
+        font-size: 1rem !important;
+        color: #111111 !important;
+        position: static !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+    }
+
+    .search-input-wrapper .search-icon {
+        display: flex !important;
+        position: absolute !important;
+        left: 1.25rem !important;
+        top: 28px !important; /* Half of 56px */
+        transform: translateY(-50%) !important;
+        color: #AAAAAA !important;
+        font-size: 1.1rem !important;
+        z-index: 10 !important;
+    }
+
+    #revisionSearchBtn {
+        height: 56px !important;
+        width: 100% !important;
+        border-radius: 28px !important;
+        background: #000000 !important;
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
         position: static !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        border-radius: 10px !important;
-        font-size: 1rem !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
     }
 
-    #revisionSearchInput {
-        background: white !important;
-        border: 1px solid #ddd !important;
-        padding: 0 1rem !important;
-        color: #333 !important;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+    /* Keep generic premium-input stacking as fallback/standard */
+    .premium-input {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+        width: 100% !important;
     }
 
-    .search-input-wrapper i {
-        display: none !important;
+    .premium-input input, 
+    .premium-input select,
+    .premium-input button {
+        height: 48px !important;
+        width: 100% !important;
+        margin: 0 !important;
+        position: static !important;
+        border-radius: 12px !important;
     }
 
     .missions-layout {
