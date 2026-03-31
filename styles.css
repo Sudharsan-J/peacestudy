@@ -2934,9 +2934,13 @@ input, textarea, [contenteditable="true"] {
     }
 }
 
-/* Final Production Mobile Polish - ZERO OVERFLOW & NAV PROTECTION */
+/* Professional Production-Level Mobile Layout (HACK-FREE) */
+:root {
+    --mobile-nav-height: 72px;
+}
+
 html, body {
-    overflow: hidden !important; /* Body doesn't scroll, main-content does */
+    overflow: hidden !important;
     width: 100vw !important;
     height: 100vh !important;
     position: relative;
@@ -2954,67 +2958,70 @@ html, body {
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch;
     position: relative;
-    padding-bottom: 80px; 
+    /* Default spacing for desktop */
+    padding-bottom: 2rem;
 }
 
 @media (max-width: 480px) {
     .main-content {
-        padding: 1rem 0 !important;
-        padding-bottom: 200px !important; /* Extremely safe padding to clear the fixed nav bar */
-    }
-
-    .view-header {
-        padding: 0 1rem !important;
+        padding: 1.25rem 0.8rem !important;
+        /* THE PROFESSIONAL FIX: Calculated padding based on Nav Height + Safe Area + Extra Breathing Room */
+        padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom) + 2.5rem) !important;
     }
 
     .card {
-        width: calc(100vw - 1.5rem) !important;
-        max-width: calc(100vw - 1.5rem) !important;
-        margin: 0 auto 1.5rem auto !important;
-        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 1.5rem !important;
     }
 
-    /* Fixed Bottom Bar - Production Standard */
+    /* Fixed Bottom Bar - Production Standard with Notch Support */
     .mobile-bottom-nav {
+        position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
         right: 0 !important;
         width: 100% !important;
-        height: 75px !important;
+        /* Height accounts for standard height + safe area (notch/home bar) */
+        height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom)) !important;
+        padding-bottom: env(safe-area-inset-bottom) !important;
         background: var(--bg-secondary) !important;
         border-radius: 0 !important;
         border: none !important;
         border-top: 1px solid var(--border-color) !important;
-        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.08) !important;
         display: flex !important;
         justify-content: space-around !important;
-        padding: 0 0.5rem !important;
+        align-items: center !important;
+        z-index: 1000 !important;
     }
 
     body.dark-mode .mobile-bottom-nav {
-        background: #111 !important;
-        border-top: 1px solid #222 !important;
+        background: #0A0A0A !important;
+        border-top: 1px solid #1A1A1A !important;
     }
 
     .mobile-bottom-nav .nav-btn {
         flex: 1 !important;
+        height: var(--mobile-nav-height) !important;
         border: none !important;
         background: none !important;
         flex-direction: column !important;
         gap: 4px !important;
-        font-size: 0.7rem !important;
+        font-size: 0.72rem !important;
+        padding: 0 !important;
     }
     
     .mobile-bottom-nav .nav-btn i {
-        font-size: 1.2rem !important;
+        font-size: 1.3rem !important;
     }
 
-    /* Missions Fix: Force Vertical Stacking for All Input Rows */
+    /* Input Stacking for missions and search */
     .search-input-wrapper,
     .premium-input {
         display: flex !important;
         flex-direction: column !important;
-        gap: 0.8rem !important;
+        gap: 0.85rem !important;
         position: static !important;
         width: 100% !important;
     }
@@ -3022,17 +3029,17 @@ html, body {
     #revisionSearchInput,
     .premium-input input,
     .premium-input select {
-        padding-left: 1rem !important;
-        height: 3.2rem !important;
+        height: 3.5rem !important;
         font-size: 1rem !important;
         width: 100% !important;
+        padding-left: 1rem !important;
     }
 
     #revisionSearchBtn,
     .premium-input button {
-        position: static !important;
+        height: 3.5rem !important;
         width: 100% !important;
-        height: 3.2rem !important;
+        position: static !important;
     }
 
     .search-input-wrapper i {
@@ -3044,19 +3051,4 @@ html, body {
         gap: 1.5rem !important;
         width: 100% !important;
     }
-
-    /* Navigation Safety Spacer - The Bulletproof Fix */
-    .mobile-nav-spacer {
-        display: block !important;
-        height: 150px !important;
-        width: 100% !important;
-        flex-shrink: 0 !important;
-    }
 }
-/* Default spacer behavior */
-.mobile-nav-spacer {
-    display: none;
-}
-
-
-
