@@ -3044,14 +3044,46 @@ html, body {
         padding: 1.25rem !important;
     }
 
-    /* Premium Pill Search Bar Refactor */
+    /* Premium FAB Navigation */
+    .mobile-bottom-nav .nav-btn.nav-fab {
+        position: relative !important;
+        overflow: visible !important;
+        flex: 1.2 !important;
+    }
+
+    .fab-circle {
+        position: absolute !important;
+        top: -28px !important; /* Floats above the bar */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 64px !important;
+        height: 64px !important;
+        background: #1DB954 !important; /* Premium Action Green */
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 8px 25px rgba(29, 185, 84, 0.45) !important;
+        border: 4px solid var(--bg-secondary) !important;
+        z-index: 1000 !important;
+    }
+
+    body.dark-mode .fab-circle {
+        border-color: #0D0D0D !important;
+    }
+
+    .fab-circle i {
+        font-size: 1.6rem !important;
+        color: white !important;
+    }
+
+    /* Target specific NCERT search refinements */
     .search-input-wrapper {
         display: flex !important;
         flex-direction: column !important;
         gap: 0.8rem !important;
         width: 100% !important;
         position: relative !important;
-        padding: 0 !important;
     }
 
     #revisionSearchInput {
@@ -3060,55 +3092,36 @@ html, body {
         background: #FFFFFF !important;
         border: 2px solid #EEEEEE !important;
         border-radius: 28px !important;
-        padding: 0 1.5rem 0 3.2rem !important; /* Space for the icon */
+        padding: 0 1.5rem 0 3.2rem !important;
         font-size: 1rem !important;
         color: #111111 !important;
         position: static !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
     }
 
     .search-input-wrapper .search-icon {
         display: flex !important;
         position: absolute !important;
         left: 1.25rem !important;
-        top: 28px !important; /* Half of 56px */
+        top: 28px !important;
         transform: translateY(-50%) !important;
-        color: #AAAAAA !important;
+        color: #888888 !important;
         font-size: 1.1rem !important;
-        z-index: 10 !important;
+        z-index: 200 !important;
     }
 
     #revisionSearchBtn {
-        height: 56px !important;
+        height: 54px !important;
         width: 100% !important;
-        border-radius: 28px !important;
+        border-radius: 27px !important;
         background: #000000 !important;
         color: #FFFFFF !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.5px !important;
         position: static !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
-    }
-
-    /* Keep generic premium-input stacking as fallback/standard */
-    .premium-input {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0.8rem !important;
-        width: 100% !important;
-    }
-
-    .premium-input input, 
-    .premium-input select,
-    .premium-input button {
-        height: 48px !important;
-        width: 100% !important;
-        margin: 0 !important;
-        position: static !important;
-        border-radius: 12px !important;
     }
 
     .missions-layout {
@@ -3126,6 +3139,12 @@ html, body {
     border-top: 1px solid var(--accent-light);
     margin-top: 4rem;
     background: rgba(0,0,0,0.015);
+}
+
+@media (max-width: 768px) {
+    .simple-footer {
+        padding-bottom: 200px !important; /* Huge gap for FAB-nav safety */
+    }
 }
 
 body.dark-mode .simple-footer {

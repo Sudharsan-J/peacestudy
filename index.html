@@ -13,32 +13,34 @@
         rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css?v=1.22">
+    <link rel="stylesheet" href="styles.css?v=1.23">
     <!-- Supabase JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body class="light-mode">
     <nav class="mobile-bottom-nav">
-        <button class="nav-btn active" data-target="view-study">
+        <button class="nav-btn" onclick="showView('view-study')">
             <i class="fa-solid fa-stopwatch"></i>
         </button>
-        <button class="nav-btn" data-target="view-missions">
+        <button class="nav-btn" onclick="showView('view-missions')">
             <i class="fa-solid fa-list-check"></i>
         </button>
-        <button class="nav-btn" data-target="view-flashcards">
+        <button class="nav-btn" onclick="showView('view-flashcards')">
             <i class="fa-solid fa-bolt"></i>
         </button>
-        <button class="nav-btn" data-target="view-revision">
-            <i class="fa-solid fa-search"></i>
+        <button class="nav-btn nav-fab" onclick="showView('view-revision')">
+            <div class="fab-circle">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
         </button>
-        <button class="nav-btn" data-target="view-analytics">
+        <button class="nav-btn" onclick="showView('view-analytics')">
             <i class="fa-solid fa-calendar-days"></i>
         </button>
-        <button class="nav-btn" data-target="view-mistakes">
+        <button class="nav-btn" onclick="showView('view-mistakes')">
             <i class="fa-solid fa-book-medical"></i>
         </button>
-        <button class="nav-btn" data-target="view-profile">
+        <button class="nav-btn" onclick="showView('view-profile')">
             <i class="fa-solid fa-user"></i>
         </button>
     </nav>
@@ -272,14 +274,10 @@
                 </div>
 
                 <div class="revision-search-container mb-4 w-full">
-                    <div class="search-input-wrapper premium-input" style="position: relative;">
-                        <i class="fa-solid fa-magnifying-glass"
-                            style="position: absolute; left: 1.2rem; top: 1.2rem; color: var(--text-tertiary);"></i>
-                        <input type="text" id="revisionSearchInput" class="styled-input full-width"
-                            placeholder="Search Biology Concepts, Formulas, or Topics..."
-                            style="padding-left: 3rem; font-size: 1.1rem; height: 3.5rem;">
-                        <button id="revisionSearchBtn" class="btn primary-btn"
-                            style="position: absolute; right: 0.5rem; top: 0.5rem; bottom: 0.5rem;">Search</button>
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="revisionSearchInput" placeholder="Search Biology Concepts, Formulas, or Topics..." autocomplete="off">
+                        <button id="revisionSearchBtn" class="btn primary-btn highlight">Search</button>
                     </div>
                 </div>
 
