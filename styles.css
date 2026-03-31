@@ -2934,32 +2934,65 @@ input, textarea, [contenteditable="true"] {
     }
 }
 
-/* Final Mobile Layout Optimization - Zero Horizontal Scroll */
-html, body, .app-layout {
+/* Final Production Mobile Polish - ZERO OVERFLOW & NAV PROTECTION */
+html, body {
+    overflow-x: hidden !important;
+    width: 100vw !important;
+    position: relative;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.main-content {
     max-width: 100vw !important;
     overflow-x: hidden !important;
-    position: relative;
 }
 
 @media (max-width: 480px) {
-    .premium-input {
+    .main-content {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-bottom: 180px !important; /* Massive padding to clear the floating pill and nav */
+    }
+
+    .card {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* Search Refinement: Stacked for clarity */
+    .search-input-wrapper {
+        display: flex !important;
         flex-direction: column !important;
         gap: 0.75rem !important;
+        position: static !important;
     }
-    
-    .premium-input > * {
+
+    #revisionSearchInput {
+        padding-left: 1rem !important;
+        height: 3rem !important;
+        font-size: 1rem !important;
         width: 100% !important;
-        margin: 0 !important;
     }
-    
-    .mission-item {
-        padding: 0.85rem !important;
-        gap: 0.75rem !important;
+
+    #revisionSearchBtn {
+        position: static !important;
+        width: 100% !important;
+        height: 3rem !important;
     }
-    
-    .mission-task {
-        font-size: 0.9rem !important;
-        word-break: break-word !important;
+
+    .search-input-wrapper i {
+        display: none !important; /* Hide icon to save space */
+    }
+
+    /* Chart horizontal scroll safety */
+    .weekly-chart {
+        overflow-x: hidden;
+        padding: 1.5rem 0.2rem !important;
     }
 }
 
