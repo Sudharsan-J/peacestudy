@@ -2954,21 +2954,59 @@ html, body {
     overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch;
     position: relative;
-    padding-bottom: 80px; /* Base padding */
+    padding-bottom: 80px; 
 }
 
 @media (max-width: 480px) {
     .main-content {
-        padding-left: 0.8rem !important;
-        padding-right: 0.8rem !important;
-        padding-bottom: 250px !important; /* Maximum safety padding to clear ALL floating elements */
+        padding: 1rem 0 !important; /* Side padding handled by cards */
+        padding-bottom: 150px !important; /* Enough space to clear fixed nav */
+    }
+
+    .view-header {
+        padding: 0 1rem !important;
     }
 
     .card {
+        width: calc(100vw - 1.5rem) !important;
+        max-width: calc(100vw - 1.5rem) !important;
+        margin: 0 auto 1.5rem auto !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Fixed Bottom Bar - Production Standard */
+    .mobile-bottom-nav {
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
         width: 100% !important;
-        max-width: 100% !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        height: 75px !important;
+        background: var(--bg-secondary) !important;
+        border-radius: 0 !important;
+        border: none !important;
+        border-top: 1px solid var(--border-color) !important;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.08) !important;
+        display: flex !important;
+        justify-content: space-around !important;
+        padding: 0 0.5rem !important;
+    }
+
+    body.dark-mode .mobile-bottom-nav {
+        background: #111 !important;
+        border-top: 1px solid #222 !important;
+    }
+
+    .mobile-bottom-nav .nav-btn {
+        flex: 1 !important;
+        border: none !important;
+        background: none !important;
+        flex-direction: column !important;
+        gap: 4px !important;
+        font-size: 0.7rem !important;
+    }
+    
+    .mobile-bottom-nav .nav-btn i {
+        font-size: 1.2rem !important;
     }
 
     /* Search Refinement: Stacked for clarity */
@@ -2990,10 +3028,6 @@ html, body {
         position: static !important;
         width: 100% !important;
         height: 3.2rem !important;
-    }
-
-    .search-input-wrapper i {
-        display: none !important;
     }
 
     /* Missions Fix */
