@@ -2926,5 +2926,12 @@ input, textarea, [contenteditable="true"] {
         height: 160px !important;
         gap: 0.5rem !important;
     }
+
+    /* Mobile Missions Layout Fix */
+    .missions-layout {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
 }
+
 
