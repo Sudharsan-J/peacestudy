@@ -285,6 +285,12 @@ document.addEventListener('DOMContentLoaded', () => {
             updateDashboardStats();
             renderGoalChart();
             renderBadgesGrid();
+            
+            // Patch: Ensure lifetimeSessions is at least today's sessions count for existing users
+            if (state.lifetimeSessions < state.stats.focusSessions) {
+                state.lifetimeSessions = state.stats.focusSessions;
+            }
+            
             updateAuthUI();
 
             // STEP 2: Bind UI Listeners (Make everything interactive right away)
