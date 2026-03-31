@@ -3009,7 +3009,7 @@ html, body {
         font-size: 1.2rem !important;
     }
 
-    /* Search & Missions Fix: Force Vertical Stacking for All Input Rows */
+    /* Missions Fix: Force Vertical Stacking for All Input Rows */
     .search-input-wrapper,
     .premium-input {
         display: flex !important;
@@ -3044,6 +3044,18 @@ html, body {
         gap: 1.5rem !important;
         width: 100% !important;
     }
+
+    /* Navigation Safety Spacer - The Bulletproof Fix */
+    .mobile-nav-spacer {
+        display: block !important;
+        height: 150px !important;
+        width: 100% !important;
+        flex-shrink: 0 !important;
+    }
+}
+/* Default spacer behavior */
+.mobile-nav-spacer {
+    display: none;
 }
 
 
