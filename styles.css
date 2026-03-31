@@ -3053,10 +3053,18 @@ html, body {
         width: 100% !important;
     }
 
-    .premium-input > * {
+    #revisionSearchInput,
+    .premium-input input, 
+    .premium-input select,
+    #revisionSearchBtn,
+    .premium-input button {
+        height: 3.5rem !important;
         width: 100% !important;
         margin: 0 !important;
-        height: 3.5rem !important;
+        position: static !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .missions-layout {
@@ -3065,14 +3073,15 @@ html, body {
     }
 }
 
-/* Simple Footer Styling */
+/* Simple Footer Styling - PRO EDITION */
 .simple-footer {
     text-align: center;
-    padding: 3rem 1rem 5.5rem 1rem;
-    color: var(--text-tertiary);
-    font-size: 0.82rem;
+    padding: 5rem 1.5rem 10rem 1.5rem; /* Massive bottom padding for zero-overlap guarantee */
+    color: var(--text-secondary); 
+    font-size: 0.95rem;
     border-top: 1px solid var(--accent-light);
-    margin-top: 2rem;
+    margin-top: 4rem;
+    background: rgba(0,0,0,0.015);
 }
 
 body.dark-mode .simple-footer {
@@ -3080,7 +3089,8 @@ body.dark-mode .simple-footer {
 }
 
 .footer-links {
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
     opacity: 0.6;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
 }
