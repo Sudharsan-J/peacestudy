@@ -2827,3 +2827,11 @@ body.dark-mode .mobile-bottom-nav {
         font-size: 1.75rem !important;
     }
 }
+
+/* God Mode - Cursor & Selection Fixes */
+.timer-text, .premium-text, .summary-value, .day-hours {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    caret-color: transparent !important;
+}
+
