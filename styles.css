@@ -2959,8 +2959,8 @@ html, body {
 
 @media (max-width: 480px) {
     .main-content {
-        padding: 1rem 0 !important; /* Side padding handled by cards */
-        padding-bottom: 150px !important; /* Enough space to clear fixed nav */
+        padding: 1rem 0 !important;
+        padding-bottom: 200px !important; /* Extremely safe padding to clear the fixed nav bar */
     }
 
     .view-header {
@@ -3009,28 +3009,36 @@ html, body {
         font-size: 1.2rem !important;
     }
 
-    /* Search Refinement: Stacked for clarity */
-    .search-input-wrapper {
+    /* Search & Missions Fix: Force Vertical Stacking for All Input Rows */
+    .search-input-wrapper,
+    .premium-input {
         display: flex !important;
         flex-direction: column !important;
-        gap: 0.75rem !important;
+        gap: 0.8rem !important;
         position: static !important;
+        width: 100% !important;
     }
 
-    #revisionSearchInput {
+    #revisionSearchInput,
+    .premium-input input,
+    .premium-input select {
         padding-left: 1rem !important;
         height: 3.2rem !important;
         font-size: 1rem !important;
         width: 100% !important;
     }
 
-    #revisionSearchBtn {
+    #revisionSearchBtn,
+    .premium-input button {
         position: static !important;
         width: 100% !important;
         height: 3.2rem !important;
     }
 
-    /* Missions Fix */
+    .search-input-wrapper i {
+        display: none !important;
+    }
+
     .missions-layout {
         grid-template-columns: 1fr !important;
         gap: 1.5rem !important;
