@@ -2421,11 +2421,24 @@ body.dark-mode .theme-pill-toggle i {
     background: linear-gradient(to top, var(--color-phy), #60a5fa);
 }
 
+.day-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+
 .day-label {
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-tertiary);
     text-transform: uppercase;
+}
+
+.day-hours {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-primary);
 }
 
 .bar-tooltip {

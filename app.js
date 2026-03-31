@@ -1293,12 +1293,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const col = document.createElement('div');
             col.className = 'chart-day-col';
+            let hoursText = Math.round(log.mins/6) / 10;
             col.innerHTML = `
                 <div class="bar-wrapper">
-                    <div class="bar-tooltip">${Math.round(log.mins/6) / 10}h / ${goalMins/60}h</div>
+                    <div class="bar-tooltip">${hoursText}h / ${goalMins/60}h</div>
                     <div class="bar-fill ${isLow ? 'low' : ''}" style="height: ${percent}%;"></div>
                 </div>
-                <span class="day-label">${dayLabel}</span>
+                <div class="day-info">
+                    <span class="day-label">${dayLabel}</span>
+                    <span class="day-hours">${hoursText}h</span>
+                </div>
             `;
             chartContainer.appendChild(col);
         }
