@@ -3064,3 +3064,23 @@ html, body {
         gap: 1.5rem !important;
     }
 }
+
+/* Simple Footer Styling */
+.simple-footer {
+    text-align: center;
+    padding: 3rem 1rem 5.5rem 1rem;
+    color: var(--text-tertiary);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--accent-light);
+    margin-top: 2rem;
+}
+
+body.dark-mode .simple-footer {
+    border-top: 1px solid #1A1A1A;
+}
+
+.footer-links {
+    margin-top: 0.5rem;
+    opacity: 0.6;
+    font-size: 0.75rem;
+}
