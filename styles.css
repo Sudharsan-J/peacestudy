@@ -2845,9 +2845,86 @@ input, textarea, [contenteditable="true"] {
     margin-top: 1.5rem;
 }
 
-.summary-stats .stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+/* God Mode - Production-Level Mobile Refinements */
+@media (max-width: 480px) {
+    :root {
+        --radius-lg: 1.25rem;
+        --radius-xl: 1.5rem;
+    }
+
+    .main-content {
+        padding: 1.25rem !important;
+        padding-bottom: 120px !important;
+    }
+
+    .view-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .view-header h2 {
+        font-size: 1.5rem !important;
+        letter-spacing: -0.02em;
+    }
+
+    .card {
+        padding: 1.5rem !important;
+    }
+
+    /* Premium Timer Refinement */
+    .timer-text.premium-text {
+        font-size: 3.8rem !important;
+        font-weight: 300 !important;
+        letter-spacing: -0.04em !important;
+    }
+
+    /* Achievement Modal - Production Level */
+    .premium-modal {
+        width: 92% !important;
+        max-width: 360px !important;
+        background: var(--bg-secondary) !important;
+        border: 1px solid var(--border-hover) !important;
+        box-shadow: var(--shadow-xl) !important;
+        padding: 2.5rem 1.5rem !important;
+    }
+
+    .stat-value {
+        font-size: 3.5rem !important;
+        font-weight: 800 !important;
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+        font-size: 0.8rem !important;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        opacity: 0.7;
+    }
+
+    /* Floating Navigation Polish */
+    .mobile-bottom-nav {
+        bottom: 20px !important;
+        left: 15px !important;
+        right: 15px !important;
+        height: 70px !important;
+        background: rgba(255, 255, 255, 0.7) !important;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    body.dark-mode .mobile-bottom-nav {
+        background: rgba(10, 10, 10, 0.7) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* Chart Mobile Optimization */
+    .weekly-chart {
+        height: 160px !important;
+        gap: 0.5rem !important;
+    }
 }
 
