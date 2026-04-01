@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         countdownDaysSmall: document.getElementById('countdownDaysSmall'),
         motivationText: document.getElementById('motivationText'),
 
-        navBtns: document.querySelectorAll('.nav-btn'),
+        navBtns: document.querySelectorAll('.nav-btn[data-target]'),
         views: document.querySelectorAll('.view-section'),
 
         // Timer
@@ -295,7 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // STEP 2: Bind UI Listeners (Make everything interactive right away)
             if (el.navBtns) el.navBtns.forEach(btn => btn.onclick = handleNavigation);
-            document.querySelectorAll('.mobile-bottom-nav .nav-btn').forEach(btn => btn.onclick = handleNavigation);
 
             if (el.themeToggle) el.themeToggle.onclick = toggleTheme;
             if (el.panicBtn) el.panicBtn.onclick = openPanicMode;
@@ -320,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el.miniTimerPill) {
                 el.miniTimerPill.onclick = (e) => {
                     if (e.target.closest('#maximizeFocusBtn')) return; // Maximize btn has its own handler
-                    const studyBtn = Array.from(el.navBtns).find(b => b.dataset.view === 'view-study-room');
+                    const studyBtn = document.querySelector('.nav-btn[data-target="view-study"]');
                     if (studyBtn) studyBtn.click();
                 };
             }
@@ -334,11 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     saveData();
                 }
                 renderGoalChart();
-            };
-
-
-            if (el.miniTimerPill) el.miniTimerPill.onclick = () => {
-                document.querySelector('.nav-btn[data-target="view-study-room"]').click();
             };
 
             if (el.revisionSearchBtn) el.revisionSearchBtn.onclick = handleRevisionSearch;
@@ -427,25 +421,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Navigation (SPA Logic) ---
     function handleNavigation(e) {
         const targetId = e.currentTarget.dataset.target;
+        if (!targetId) return;
 
-        // Update Buttons
-        el.navBtns.forEach(btn => btn.classList.remove('active'));
-        e.currentTarget.classList.add('active');
-
-        // Sync with mobile bottom nav if it exists
-        const bottomNavBtn = document.querySelector(`.mobile-bottom-nav .nav-btn[data-target="${targetId}"]`);
-        if (bottomNavBtn) {
-            document.querySelectorAll('.mobile-bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
-            bottomNavBtn.classList.add('active');
-        }
+        el.navBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.target === targetId);
+        });
 
         // Update Views
         el.views.forEach(view => {
-            if (view.id === targetId) {
-                view.classList.add('active');
-            } else {
-                view.classList.remove('active');
-            }
+            view.classList.toggle('active', view.id === targetId);
         });
     }
 
