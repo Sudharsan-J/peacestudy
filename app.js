@@ -643,11 +643,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyTheme(theme) {
         const icon = el.themeToggle.querySelector('i');
         if (theme === 'dark') {
+            document.documentElement.classList.add('dark-mode');
+            document.documentElement.classList.remove('light-mode');
             document.body.classList.add('dark-mode');
             document.body.classList.remove('light-mode');
             icon.className = 'fa-solid fa-sun';
             el.themeToggle.title = 'Switch to Light Mode';
         } else {
+            document.documentElement.classList.add('light-mode');
+            document.documentElement.classList.remove('dark-mode');
             document.body.classList.add('light-mode');
             document.body.classList.remove('dark-mode');
             icon.className = 'fa-solid fa-moon';
