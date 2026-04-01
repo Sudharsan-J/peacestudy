@@ -3000,7 +3000,10 @@ html, body {
     }
 
     .main-content {
+        display: flex !important;
+        flex-direction: column !important;
         height: auto !important;
+        min-height: calc(100dvh - var(--mobile-nav-height) - env(safe-area-inset-bottom)) !important;
         width: 100% !important;
         overflow: visible !important;
         padding: 1rem 0.8rem !important;
@@ -3013,6 +3016,11 @@ html, body {
         height: auto !important;
         min-height: 0 !important;
         background-color: transparent !important;
+    }
+
+    .view-section.active {
+        flex: 1 0 auto !important;
+        min-height: calc(100dvh - var(--mobile-nav-height) - env(safe-area-inset-bottom) - 2rem) !important;
     }
 
     /* Fixed Bottom Dock - Fixed but non-overlapping thanks to body padding */
