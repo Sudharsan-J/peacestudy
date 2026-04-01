@@ -3198,3 +3198,56 @@ body.dark-mode .simple-footer {
     font-size: 0.8rem;
     letter-spacing: 0.5px;
 }
+
+/* Final Mobile Stability Patch */
+@media (max-width: 768px) {
+    html, body {
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+        overflow: hidden !important;
+        padding-bottom: 0 !important;
+        background: var(--bg-primary) !important;
+    }
+
+    #app,
+    .app-layout {
+        display: flex !important;
+        width: 100% !important;
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+        overflow: hidden !important;
+        background: var(--bg-primary) !important;
+    }
+
+    .sidebar {
+        display: none !important;
+    }
+
+    .main-content {
+        flex: 1 1 auto !important;
+        display: block !important;
+        height: 100dvh !important;
+        min-height: 100dvh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: 1rem 0.85rem calc(var(--mobile-nav-height) + env(safe-area-inset-bottom) + 1.25rem) !important;
+        background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent),
+            radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05), transparent),
+            var(--bg-primary) !important;
+    }
+
+    .view-section {
+        height: auto !important;
+        min-height: calc(100dvh - var(--mobile-nav-height) - env(safe-area-inset-bottom) - 2rem) !important;
+    }
+
+    .view-section.active {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .simple-footer {
+        display: none !important;
+    }
+}
